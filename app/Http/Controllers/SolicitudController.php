@@ -87,6 +87,24 @@ public function update(Request $request, $id)
 }
 
 
+public function confirmDelete($id)
+{
+    $solicitud = Solicitudes::findOrFail($id);
+    // return view('solicitudes.delete', compact('solicitud'));
+    // Pasar la solicitud a la vista
+    return view('solicitudes.delete', ['Id' => $solicitud->id]);
+}
+
+public function destroy($id)
+{
+    $solicitud = Solicitudes::findOrFail($id);
+    $solicitud->delete();
+
+    return redirect()->route('solicitudes.index')->with('success', 'Solicitud eliminada correctamente.');
+}
+
+
+
 
 //     public function show($id)
 // {

@@ -32,6 +32,8 @@ Route::get('/solicitudes/create', [SolicitudController::class, 'create']);
 Route::post('/solicitudes', [SolicitudController::class, 'store'])->name('solicitudes.store');
 Route::get('/solicitudes/{id}/edit', [SolicitudController::class, 'edit'])->name('solicitudes.edit');
 Route::put('/solicitudes/{id}', [SolicitudController::class, 'update'])->name('solicitudes.update');
+Route::get('/solicitudes/{id}/delete', [SolicitudController::class, 'confirmDelete'])->name('solicitudes.delete');
+Route::delete('/solicitudes/{id}', [SolicitudController::class, 'destroy'])->name('solicitudes.destroy');
 
 
 //creditos

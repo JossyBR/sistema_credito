@@ -27,8 +27,9 @@
                 <td>{{ $solicitud->fecha_solicitud }}</td>
                 <td>{{ $solicitud->tipo_credito }}</td>
                 <td>
-                    <a href="{{ route('credito.show', $solicitud->id) }}" class="btn btn-success">Detalle</a>
+                    <a href="{{ route('credito.show', $solicitud->id) }}" class="btn btn-success">Estudiar Solicitud</a>
                     <a href="{{ route('solicitudes.edit', $solicitud->id) }}" class="btn btn-success">Editar</a>
+                    <a href="{{ route('solicitudes.delete', $solicitud->id) }}"" class="btn btn-success">Eliminar</a>
                 </td>
             </tr>
             @endforeach
