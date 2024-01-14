@@ -17,14 +17,14 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($creditos as $credito)
+        @foreach ($creditos as $credito)
             <tr>
                 <td>{{ $credito->numero_cuenta }}</td>
                 <td>{{ $credito->valor_credito }}</td>
                 <td>{{ $credito->numero_cuotas }}</td>
                 <td>{{ $credito->valor_cuota }}</td>
                 <td>{{ $credito->cliente_solicitante }}</td>
-                <td>{{ $credito->fecha_aprobacion->format('Y-m-d') }}</td>
+                <td>{{ $credito->fecha_aprobacion }}</td>
                 <td>{{ $credito->aprobador }}</td>
                 <td>{{ $credito->tipo_credito }}</td>
             </tr>

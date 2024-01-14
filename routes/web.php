@@ -29,8 +29,10 @@ Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'inde
 //solicitudes
 Route::get('/solicitudes', [SolicitudController::class, 'index'])->name('solicitudes.index');
 Route::get('/solicitudes/create', [SolicitudController::class, 'create']);
-// Route::get('/solicitudes/{id}', [SolicitudController::class, 'show'])->name('solicitudes.show');
 Route::post('/solicitudes', [SolicitudController::class, 'store'])->name('solicitudes.store');
+Route::get('/solicitudes/{id}/edit', [SolicitudController::class, 'edit'])->name('solicitudes.edit');
+Route::put('/solicitudes/{id}', [SolicitudController::class, 'update'])->name('solicitudes.update');
+
 
 //creditos
 Route::get('/creditos', [CreditoController::class, 'index'])->name('credito.index');

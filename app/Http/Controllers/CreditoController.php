@@ -48,11 +48,10 @@ class CreditoController extends Controller
     return redirect()->route('credito.index')->with('status', 'Crédito creado con éxito');
 }
 
-public function show($id)
+    public function show($id)
 {
-    $solicitud = Solicitudes::findOrFail($id);
+    $solicitud = Solicitudes::findOrFail($id); // Reemplaza 'Solicitud' con tu modelo de solicitud
     return view('credito.detail', compact('solicitud'));
 }
-
   
 }

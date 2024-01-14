@@ -49,6 +49,45 @@ class SolicitudController extends Controller
       return redirect()->route('solicitudes.index')->with('status', 'Solicitud creada exitosamente!');
     }
 
+    public function edit($id)
+{
+    $solicitud = Solicitudes::findOrFail($id);
+    return view('solicitudes.edit', compact('solicitud'));
+}
+
+public function update(Request $request, $id)
+{
+    // Validación de los datos del formulario
+    $request->validate([
+        'cliente_solicitante' => 'required', // Ajusta las reglas según tus necesidades
+        'valor_credito' => 'required|numeric',
+        'cuotas_solicitadas' => 'required|numeric',
+        'descripcion' => 'required',
+        'estado_solicitud' => 'required',
+        'fecha_solicitud' => 'required|date',
+        'tipo_credito' => 'required',
+        'observaciones_asesor' => 'nullable' // 'nullable' si el campo puede estar vacío
+    ]);
+
+    // Busca la solicitud por su ID y actualízala con los nuevos datos
+    $solicitud = Solicitudes::findOrFail($id);
+    $solicitud->update([
+        'cliente_solicitante' => $request->cliente_solicitante,
+        'valor_credito' => $request->valor_credito,
+        'cuotas' => $request->cuotas_solicitadas, // Asegúrate de que el campo en la base de datos coincida
+        'descripcion' => $request->descripcion,
+        'estado' => $request->estado_solicitud, // Asegúrate de que el campo en la base de datos coincida
+        'fecha_solicitud' => $request->fecha_solicitud,
+        'tipo_credito' => $request->tipo_credito,
+        'observaciones' => $request->observaciones_asesor // Asegúrate de que el campo en la base de datos coincida
+    ]);
+
+    // Redireccionar al usuario a la lista de solicitudes con un mensaje de éxito
+    return redirect()->route('solicitudes.index')->with('success', 'Solicitud actualizada correctamente.');
+}
+
+
+
 //     public function show($id)
 // {
 //     $solicitud = Solicitudes::findOrFail($id); // Reemplaza 'Solicitud' con tu modelo de solicitud

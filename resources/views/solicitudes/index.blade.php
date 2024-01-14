@@ -21,13 +21,14 @@
             <tr>
                 <td>{{ $solicitud->cliente_solicitante }}</td>
                 <td>{{ $solicitud->valor_credito }}</td>
-                <td>{{ $solicitud->cuotas }}</td>
+                <td>{{ $solicitud->cuotas_solicitadas }}</td>
                 <td>{{ $solicitud->descripcion }}</td>
                 <td>{{ $solicitud->estado }}</td>
                 <td>{{ $solicitud->fecha_solicitud }}</td>
                 <td>{{ $solicitud->tipo_credito }}</td>
                 <td>
                     <a href="{{ route('credito.show', $solicitud->id) }}" class="btn btn-success">Detalle</a>
+                    <a href="{{ route('solicitudes.edit', $solicitud->id) }}" class="btn btn-success">Editar</a>
                 </td>
             </tr>
             @endforeach
