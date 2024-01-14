@@ -14,7 +14,7 @@
     <body class="antialiased">
         <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
             
-            <div><h1>Bienvenido a Welcome</h1></div>
+            <div><h1>Yo soy el dashboard</h1></div>
 
             <div id="app"></div>
             <!-- Referencia al script de Vite -->
