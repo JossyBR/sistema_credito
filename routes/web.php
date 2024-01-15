@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +19,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\CreditoController;
+use App\Http\Controllers\UserController;
 
 // Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'dashboard']);
 // Route::get('/dashboard', 'DashboardController::class)->name('dashboard');
@@ -40,3 +46,8 @@ Route::delete('/solicitudes/{id}', [SolicitudController::class, 'destroy'])->nam
 Route::get('/creditos', [CreditoController::class, 'index'])->name('credito.index');
 Route::get('/solicitudes/{id}', [CreditoController::class, 'show'])->name('credito.show');
 Route::post('/creditos', [CreditoController::class, 'store'])->name('credito.store');
+
+//usuarios
+Route::get('/users/create', [UserController::class, 'create']);
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
+
