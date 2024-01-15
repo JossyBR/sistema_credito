@@ -19,7 +19,7 @@
     <form method="POST" action="{{ route('credito.store') }}">
         @csrf
         <!-- Campos del Crédito... -->
-        <input type="hidden" name="solicitud_id" value="{{ $solicitud->id }}">
+        <!-- <input type="hidden" name="solicitud_id" value="{{ $solicitud->id }}"> -->
         <div class="form-group">
             <label for="numero_cuenta">Número de Cuenta</label>
             <input type="text" class="form-control" id="numero_cuenta" name="numero_cuenta">
@@ -32,11 +32,11 @@
         </div>
         <div class="form-group">
             <label for="numero_cuotas">Número de Cuotas</label>
-            <input type="text" class="form-control" id="numero_cuotas" name=numero_cuotas">
+            <input type="text" class="form-control" id="numero_cuotas" name="numero_cuotas">
         </div>
         <div class="form-group">
             <label for="valor_cuota">Valor de Cuotas</label>
-            <input type="text" class="form-control" id="valor_cuota" name=valor_cuota">
+            <input type="text" class="form-control" id="valor_cuota" name="valor_cuota">
         </div>
         <div class="form-group">
             <label for="cliente_solicitante">Cliente que solicita</label>
@@ -57,10 +57,19 @@
             <input type="hidden" class="form-control" id="tipo_credito" name="tipo_credito" value="{{ $solicitud->tipo_credito }}">
             <p>{{ $solicitud->tipo_credito }}</p>
         </div>
+        <input type="hidden" name="solicitud_id" value="{{ $solicitud->id }}">
+        <input type="hidden" name="accion" id="accion" value="">
         <div>
-            <button type="submit" class="btn btn-success">Crear credito</button>
+            <!-- <button type="submit" class="btn btn-success">Crear credito</button> -->
+            <button type="submit" class="btn btn-success" onclick="setAccion('aprobar')">Aprobado</button>
+            <button type="submit" class="btn btn-success" onclick="setAccion('rechazar')">No Aprobado</button>
         </div>
         
+        <script>
+            function setAccion(accion) {
+                document.getElementById('accion').value = accion;
+            }
+        </script>
 
     </form>
   

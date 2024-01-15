@@ -18,6 +18,7 @@ class Credito extends Model
         'fecha_aprobacion',
         'aprobador',
         'tipo_credito',
+        'estado',
     ];
     
     public function solicitud()

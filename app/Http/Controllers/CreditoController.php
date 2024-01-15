@@ -16,37 +16,86 @@ class CreditoController extends Controller
 
     public function store(Request $request)
 {
-    Log::info($request->all());
-    // Validación de los datos
+    // Validación de los datos comunes
     $request->validate([
         'numero_cuenta' => 'required',
         'numero_cuotas' => 'required|numeric',
         'valor_cuota' => 'required|numeric',
         'fecha_aprobacion' => 'required|date',
         'aprobador' => 'required',
+        'tipo_credito' => 'required',
+        // Asumiendo que estás enviando un campo 'accion' en tu formulario
+        'accion' => 'required|in:aprobar,rechazar'
     ]);
 
-    // Crear el crédito
-    $credito = new Credito;
-    $credito->numero_cuenta = $request->numero_cuenta;
-    $credito->valor_credito = $request->valor_credito; 
-    $credito->numero_cuotas = $request->numero_cuotas;
-    $credito->valor_cuota = $request->valor_cuota;
-    $credito->cliente_solicitante = $request->cliente_solicitante;
-    $credito->fecha_aprobacion = $request->fecha_aprobacion;
-    $credito->aprobador = $request->aprobador;
-    $credito->tipo_credito = $request->tipo_credito;
-                
-    $credito->save();
+    // Dependiendo de la acción, se aprueba o rechaza el crédito
+    if ($request->accion == 'aprobar') {
+        // Crear el crédito
+        $credito = new Credito([
+            'numero_cuenta' => $request->numero_cuenta,
+            'valor_credito' => $request->valor_credito,
+            'numero_cuotas' => $request->numero_cuotas,
+            'valor_cuota' => $request->valor_cuota,
+            'cliente_solicitante' => $request->cliente_solicitante,
+            'fecha_aprobacion' => $request->fecha_aprobacion,
+            'aprobador' => $request->aprobador,
+            'tipo_credito' => $request->tipo_credito,
+            // 'accion' => 'required|in:aprobar,rechazar',
+            // 'solicitud_id' => 'required|exists:solicitudes,id'
+            // 'estado' => 'aprobado' ,
+        ]);
+        $credito->save();
+        $mensaje = 'Crédito aprobado y creado con éxito';
 
-    // Actualizar estado de la solicitud (opcional)
-    // $solicitud = Solicitudes::find($request->solicitud_id);
-    // $solicitud->estado = 'Procesado'; // Cambia el estado según tus necesidades
-    // $solicitud->save();
+        $solicitud = Solicitudes::find($request->solicitud_id);
+        $solicitud->estado_solicitud = 'aprobado';
+        $solicitud->save();
+
+    } elseif ($request->accion == 'rechazar') {
+        $solicitud = Solicitudes::find($request->solicitud_id);
+        $solicitud->estado_solicitud = 'rechazado';
+        $solicitud->save();
+        $mensaje = 'Solicitud rechazada';
+    }
 
     // Redireccionar 
-    return redirect()->route('credito.index')->with('status', 'Crédito creado con éxito');
+    return redirect()->route('credito.index')->with('status', $mensaje);
 }
+
+
+//     public function store(Request $request)
+// {
+//     Log::info($request->all());
+//     // Validación de los datos
+//     $request->validate([
+//         'numero_cuenta' => 'required',
+//         'numero_cuotas' => 'required|numeric',
+//         'valor_cuota' => 'required|numeric',
+//         'fecha_aprobacion' => 'required|date',
+//         'aprobador' => 'required',
+//     ]);
+
+//     // Crear el crédito
+//     $credito = new Credito;
+//     $credito->numero_cuenta = $request->numero_cuenta;
+//     $credito->valor_credito = $request->valor_credito; 
+//     $credito->numero_cuotas = $request->numero_cuotas;
+//     $credito->valor_cuota = $request->valor_cuota;
+//     $credito->cliente_solicitante = $request->cliente_solicitante;
+//     $credito->fecha_aprobacion = $request->fecha_aprobacion;
+//     $credito->aprobador = $request->aprobador;
+//     $credito->tipo_credito = $request->tipo_credito;
+                
+//     $credito->save();
+
+//     // Actualizar estado de la solicitud 
+//     // $solicitud = Solicitudes::find($request->solicitud_id);
+//     // $solicitud->estado = 'Procesado'; // Cambia el estado según tus necesidades
+//     // $solicitud->save();
+
+//     // Redireccionar 
+//     return redirect()->route('credito.index')->with('status', 'Crédito creado con éxito');
+// }
 
     public function show($id)
 {

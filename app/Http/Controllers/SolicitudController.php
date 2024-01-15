@@ -38,7 +38,8 @@ class SolicitudController extends Controller
       $solicitud->valor_credito = $request->valor_credito;
       $solicitud->cuotas_solicitadas = $request->cuotas_solicitadas;
       $solicitud->descripcion = $request->descripcion;
-      $solicitud->estado_solicitud = $request->estado_solicitud;
+    //   $solicitud->estado_solicitud = $request->estado_solicitud;
+      $solicitud->estado_solicitud = 'pendiente';
       $solicitud->fecha_solicitud = $request->fecha_solicitud;
       $solicitud->tipo_credito = $request->tipo_credito;
       $solicitud->observaciones_asesor = $request->observaciones_asesor;

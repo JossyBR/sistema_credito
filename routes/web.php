@@ -50,4 +50,5 @@ Route::post('/creditos', [CreditoController::class, 'store'])->name('credito.sto
 //usuarios
 Route::get('/users/create', [UserController::class, 'create']);
 Route::post('/users', [UserController::class, 'store'])->name('users.store');
+Route::get('/users', [UserController::class, 'index'])->name('usuarios.index');
 

@@ -8,9 +8,16 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function index()
+    {
+        // return view('solicitudes.index');
+        $users = User::all(); // Obtener todas las solicitudes
+        return view('usuarios.index', compact('users'));
+       
+    }
     public function create()
     {
-        return view('asesores.create');
+        return view('usuarios.create');
     }
     public function store(Request $request)
     {
@@ -28,4 +35,8 @@ class UserController extends Controller
 
         return redirect()->route('solicitudes.index')->with('success', 'Usuario creado correctamente.');
     }
+    
+    // public function show(){
+    //     return view('usuario.index');
+    // }
 }

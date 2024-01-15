@@ -23,7 +23,7 @@
                 <td>{{ $solicitud->valor_credito }}</td>
                 <td>{{ $solicitud->cuotas_solicitadas }}</td>
                 <td>{{ $solicitud->descripcion }}</td>
-                <td>{{ $solicitud->estado }}</td>
+                <td>{{ $solicitud->estado_solicitud }}</td>
                 <td>{{ $solicitud->fecha_solicitud }}</td>
                 <td>{{ $solicitud->tipo_credito }}</td>
                 <td>
