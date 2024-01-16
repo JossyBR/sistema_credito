@@ -40,10 +40,12 @@
         <option value="Vivienda">Vivienda</option>
     </select>
 </div>
+        @hasanyrole('asesor|gerente general')
         <div class="form-group">
             <label for="observaciones_asesor">Observaciones del asesor</label>
             <textarea class="form-control" id="observaciones_asesor" name="observaciones_asesor"></textarea>
         </div>
+        @endhasanyrole
         <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
     </form>
 </div>

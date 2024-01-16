@@ -16,21 +16,36 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RolesAndPermissionsSeeder::class);
 
-        User::create([
+        // Crear usuario y asignar el rol de 'super administrador'
+        $userSuperAdmin = User::create([
             'name' => 'Sofia Gonzalez',
             'email' => 'sofi@gmail.com',
-            'password' => Hash::make('admin1234'),
-            'role' => 'super administrador'
+            'password' => Hash::make('admin1234')
         ]);
-        
-    
+        $userSuperAdmin->assignRole('super administrador');
 
-        User::create([
+        // Crear usuario y asignar el rol de 'gerente general'
+        $userGerenteGeneral = User::create([
             'name' => 'Margarita Gutierrez',
             'email' => 'gerentegeneral@gmail.com',
-            'password' => Hash::make('gerente1234'),
-            'role' => 'gerente general'
+            'password' => Hash::make('gerente1234')
         ]);
+        $userGerenteGeneral->assignRole('gerente general');
+
+        // User::create([
+        //     'name' => 'Sofia Gonzalez',
+        //     'email' => 'sofi@gmail.com',
+        //     'password' => Hash::make('admin1234'),
+        //     'role' => 'super administrador'
+        // ]);
+        
+        // User::create([
+        //     'name' => 'Margarita Gutierrez',
+        //     'email' => 'gerentegeneral@gmail.com',
+        //     'password' => Hash::make('gerente1234'),
+        //     'role' => 'gerente general'
+        // ]);
+        
     
         // \App\Models\User::factory(10)->create();
 

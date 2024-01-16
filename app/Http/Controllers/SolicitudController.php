@@ -75,12 +75,12 @@ public function update(Request $request, $id)
     $solicitud->update([
         'cliente_solicitante' => $request->cliente_solicitante,
         'valor_credito' => $request->valor_credito,
-        'cuotas' => $request->cuotas_solicitadas, // Asegúrate de que el campo en la base de datos coincida
+        'cuotas' => $request->cuotas_solicitadas, 
         'descripcion' => $request->descripcion,
-        'estado' => $request->estado_solicitud, // Asegúrate de que el campo en la base de datos coincida
+        'estado' => $request->estado_solicitud, 
         'fecha_solicitud' => $request->fecha_solicitud,
         'tipo_credito' => $request->tipo_credito,
-        'observaciones' => $request->observaciones_asesor // Asegúrate de que el campo en la base de datos coincida
+        'observaciones' => $request->observaciones_asesor 
     ]);
 
     // Redireccionar al usuario a la lista de solicitudes con un mensaje de éxito

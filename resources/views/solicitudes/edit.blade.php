@@ -26,10 +26,7 @@
         <div class="form-group">
             <label for="estado_solicitud">Estado de la solicitud</label>
             <select class="form-control" id="estado_solicitud" name="estado_solicitud" value="{{ $solicitud->estado }}">
-                <option value="">Selecciona</option>
                 <option value="pendiente">Pendiente</option>
-                <option value="aprobada">Aprobada</option>
-                <option value="rechazada">Rechazada</option>
             </select>
         </div>
         <div class="form-group">

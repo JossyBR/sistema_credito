@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+                <div class="card-header">{{ __('Bienvenido al Panel de Control') }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -14,7 +14,8 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    <p>¡Hola, <strong>{{ Auth::user()->name }}</strong>! Has iniciado sesión correctamente.</p>
+                    <p>Explora las funcionalidades del sistema de gestión de créditos y comienza a administrar tus procesos hoy mismo.</p>
                 </div>
             </div>
         </div>

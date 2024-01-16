@@ -30,7 +30,10 @@
                 <div class="p-3">
                 <a  href="{{ route('solicitudes.index') }}" class="text-black p-3">Solicitudes</a>
                 <a href="{{ route('credito.index') }}" class="text-black p-3">Creditos</a>
-            
+                @role('gerente general') 
+                <a href="/users/create" class="text-black p-3">Crear asesor</a>
+                @else
+                @endrole
                 </div>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">

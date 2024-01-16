@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Log;
+
+
 
 use Illuminate\Http\Request;
 
@@ -10,6 +16,7 @@ class UserController extends Controller
 {
     public function index()
     {
+        
         // return view('solicitudes.index');
         $users = User::all(); // Obtener todas las solicitudes
         return view('usuarios.index', compact('users'));
@@ -17,6 +24,12 @@ class UserController extends Controller
     }
     public function create()
     {
+ 
+        // return view('usuarios.create');
+        // if (!Gate::authorize('crear-asesores')) {
+        //     abort(403, 'No tienes permiso para crear asesores.');
+        // }
+        // Mostrar formulario para crear asesores
         return view('usuarios.create');
     }
     public function store(Request $request)
@@ -27,11 +40,13 @@ class UserController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        $user->assignRole('asesor');
 
         return redirect()->route('solicitudes.index')->with('success', 'Usuario creado correctamente.');
     }
@@ -39,4 +54,46 @@ class UserController extends Controller
     // public function show(){
     //     return view('usuario.index');
     // }
+
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('usuarios.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+{
+    // Validación de los datos del formulario
+    $request->validate([
+        'name' => 'required', 
+        'email' => 'required',
+        'password' => 'required',
+    
+    ]);
+
+    // Busca la solicitud por su ID y actualízala con los nuevos datos
+    $user = User::findOrFail($id);
+    $user->update([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => $request->password   
+    ]);
+    return redirect()->route('usuarios.index')->with('success', 'Usuario modificado correctamente.');
+}
+
+public function confirmDelete($id)
+{
+    $user = User::findOrFail($id);
+    return view('usuarios.delete', ['Id' => $user->id]);
+}
+
+
+public function destroy($id)
+{
+    $user = User::findOrFail($id);
+    $user->delete();
+
+    return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado correctamente.');
+}
+   
 }
