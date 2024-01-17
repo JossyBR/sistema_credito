@@ -12,6 +12,8 @@ class CreditoController extends Controller
     public function index() {
         $creditos = Credito::all();
         return view('credito.index', compact ('creditos'));
+
+
     }
 
     public function store(Request $request)
@@ -24,8 +26,8 @@ class CreditoController extends Controller
         'fecha_aprobacion' => 'required|date',
         'aprobador' => 'required',
         'tipo_credito' => 'required',
-        // Asumiendo que estás enviando un campo 'accion' en tu formulario
-        'accion' => 'required|in:aprobar,rechazar'
+        'accion' => 'required|in:aprobar,rechazar',
+        'solicitud_id' => 'required|exists:solicitudes,id'
     ]);
 
     // Dependiendo de la acción, se aprueba o rechaza el crédito
@@ -40,13 +42,14 @@ class CreditoController extends Controller
             'fecha_aprobacion' => $request->fecha_aprobacion,
             'aprobador' => $request->aprobador,
             'tipo_credito' => $request->tipo_credito,
-            // 'accion' => 'required|in:aprobar,rechazar',
-            // 'solicitud_id' => 'required|exists:solicitudes,id'
-            // 'estado' => 'aprobado' ,
+            'solicitud_id' => $request->solicitud_id,
+            'estado' => 'aprobado',
+            
         ]);
         $credito->save();
         $mensaje = 'Crédito aprobado y creado con éxito';
 
+        // Actualizar la solicitud correspondiente
         $solicitud = Solicitudes::find($request->solicitud_id);
         $solicitud->estado_solicitud = 'aprobado';
         $solicitud->save();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Solicitudes;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
@@ -9,9 +10,28 @@ class SolicitudController extends Controller
 {
     public function index()
     {
-        // return view('solicitudes.index');
-        $solicitudes = Solicitudes::all(); // Obtener todas las solicitudes
-        return view('solicitudes.index', compact('solicitudes'));
+        $user = Auth::user();
+
+    // Verifica si el usuario es gerente general o asesor
+    if ($user->roles->pluck('name')->contains('gerente general') || $user->roles->pluck('name')->contains('asesor')) {
+        // Obtener todas las solicitudes
+        $solicitudes = Solicitudes::all();
+    } else {
+        // Obtener solo las solicitudes del usuario
+        $solicitudes = Solicitudes::where('user_id', $user->id)->get();
+    }
+
+    return view('solicitudes.index', compact('solicitudes'));
+        // $solicitudes = Solicitudes::all(); // Obtener todas las solicitudes
+        // return view('solicitudes.index', compact('solicitudes'));
+
+        // Obtiene el ID del usuario autenticado
+        // $userId = Auth::id();
+
+        // // Obtiene solo las solicitudes que pertenecen al usuario autenticado
+        // $solicitudes = Solicitudes::where('user_id', $userId)->get();
+
+        // return view('solicitudes.index', compact('solicitudes'));
        
     }
     public function create()
@@ -31,18 +51,25 @@ class SolicitudController extends Controller
         'tipo_credito' => 'required',
        
       ]);
+
+      // Preparar datos para la nueva solicitud
+        $data = $request->all();
+        $data['user_id'] = Auth::id(); // Asigna el ID del usuario autenticado
+        $data['estado_solicitud'] = 'pendiente'; // Valor por defecto para el estado
     
-      // Crear nueva solicitud
-      $solicitud = new Solicitudes;
-      $solicitud->cliente_solicitante = $request->cliente_solicitante;
-      $solicitud->valor_credito = $request->valor_credito;
-      $solicitud->cuotas_solicitadas = $request->cuotas_solicitadas;
-      $solicitud->descripcion = $request->descripcion;
-    //   $solicitud->estado_solicitud = $request->estado_solicitud;
-      $solicitud->estado_solicitud = 'pendiente';
-      $solicitud->fecha_solicitud = $request->fecha_solicitud;
-      $solicitud->tipo_credito = $request->tipo_credito;
-      $solicitud->observaciones_asesor = $request->observaciones_asesor;
+    // Crear nueva solicitud esto es hacerlo manualmente
+    //   $solicitud = new Solicitudes;
+    //   $solicitud->cliente_solicitante = $request->cliente_solicitante;
+    //   $solicitud->valor_credito = $request->valor_credito;
+    //   $solicitud->cuotas_solicitadas = $request->cuotas_solicitadas;
+    //   $solicitud->descripcion = $request->descripcion;
+    //   $solicitud->estado_solicitud = 'pendiente';
+    //   $solicitud->fecha_solicitud = $request->fecha_solicitud;
+    //   $solicitud->tipo_credito = $request->tipo_credito;
+    //   $solicitud->observaciones_asesor = $request->observaciones_asesor;
+
+    // Crear nueva solicitud //Laravel automáticamente crea una nueva instancia de Solicitudes
+    $solicitud = Solicitudes::create($data);
    
       $solicitud->save();
     

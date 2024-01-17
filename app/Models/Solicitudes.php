@@ -17,6 +17,12 @@ class Solicitudes extends Model
         'estado_solicitud',
         'fecha_solicitud',
         'tipo_credito',
-        'observaciones_asesor'
+        'observaciones_asesor',
+        'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

@@ -14,6 +14,7 @@
                 <th>Fecha de Aprobación</th>
                 <th>Nombre Quien Aprueba</th>
                 <th>Tipo de Crédito</th>
+                <th>Estado</th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +28,7 @@
                 <td>{{ $credito->fecha_aprobacion }}</td>
                 <td>{{ $credito->aprobador }}</td>
                 <td>{{ $credito->tipo_credito }}</td>
+                <td>{{ $credito->estado }}</td>
             </tr>
             @endforeach
         </tbody>

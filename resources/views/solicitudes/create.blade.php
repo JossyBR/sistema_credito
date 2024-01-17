@@ -7,7 +7,7 @@
         @csrf
         <div class="form-group">
             <label for="cliente_solicitante">Cliente que solicita</label>
-            <input type="text" class="form-control" id="cliente_solicitante" name="cliente_solicitante" required>
+            <input type="text" class="form-control" id="cliente_solicitante" name="cliente_solicitante"  required>
         </div>
 
         <div class="form-group">
