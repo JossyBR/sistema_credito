@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -46,9 +48,23 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $user->assignRole('asesor');
+         // Asignar rol basado en el usuario que crea el nuevo usuario
+    // if (Auth::user()->hasRole('superadministrador')) {
+    //     // Asignar el rol seleccionado en el formulario
+    //     $user->assignRole($request->role);
+    // } else {
+    //     // Si no es superadministrador, asignar el rol de 'asesor' por defecto
+    //     $user->assignRole('asesor');
+    // }
 
+    if ($request->input('is_superadmin') === 'true') {
+        // Asignar el rol seleccionado en el formulario
+        $user->assignRole($request->input('role'));
+        return redirect()->route('usuarios.index')->with('success', 'Usuario creado correctamente.');
+    } else {
+        $user->assignRole('asesor');
         return redirect()->route('solicitudes.index')->with('success', 'Usuario creado correctamente.');
+    }
     }
     
     // public function show(){

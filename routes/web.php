@@ -48,7 +48,7 @@ Route::get('/solicitudes/{id}', [CreditoController::class, 'show'])->name('credi
 Route::post('/creditos', [CreditoController::class, 'store'])->name('credito.store');
 
 //usuario asesor
-Route::get('/users/create', [UserController::class, 'create']);
+Route::get('/users/create', [UserController::class, 'create'])->name('usuarios.create');
 Route::post('/users', [UserController::class, 'store'])->name('users.store');
 Route::get('/users', [UserController::class, 'index'])->name('usuarios.index');
 

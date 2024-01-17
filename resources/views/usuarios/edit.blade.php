@@ -19,7 +19,11 @@
             <div class="form-group">
                 <label for="password">Contraseña</label>
                 <input type="password" class="form-control" id="password" name="password" value="{{ $user->password }}" required>
-            </div>    
+            </div>
+            <div class="form-group">
+        <label for="role">Rol</label>
+        <input type="text" class="form-control" id="role" name="role" value="{{ $user->role }}" readonly>
+    </div> 
 
             <button type="submit" class="btn btn-primary">Editar Usuario</button>
         </form>

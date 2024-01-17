@@ -4,6 +4,7 @@
 @role('super administrador')  
     <div class="container">
         <h1>Usuarios</h1>
+        <a href="{{ route('usuarios.create') }}" class="btn btn-success">Crear Usuario</a>
         <table class="table">
             <thead>
                 <tr>
@@ -19,6 +20,7 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->password }}</td>
                     <td>
+                        
                         <a href="{{ route('usuarios.edit', $user->id) }}" class="btn btn-success">Editar</a>
                         <a href="{{ route('usuarios.delete', $user->id) }}" class="btn btn-danger">Eliminar</a>
 
