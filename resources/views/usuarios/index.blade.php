@@ -8,9 +8,10 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Nombre</th>
+                    <th>Nombre Completo</th>
                     <th>Correo</th>
-                    <th>Contraseña</th>
+                    <th>Rol</th>
+                    <!-- <th>Contraseña</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -18,7 +19,10 @@
                 <tr>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
-                    <td>{{ $user->password }}</td>
+                    <td>@foreach ($user->roles as $role)
+                        {{ $role->name }}{{ !$loop->last ? ', ' : '' }}
+                        @endforeach</td>
+                    <!-- <td>{{ $user->password }}</td> -->
                     <td>
                         
                         <a href="{{ route('usuarios.edit', $user->id) }}" class="btn btn-success">Editar</a>

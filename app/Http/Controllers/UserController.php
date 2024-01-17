@@ -16,14 +16,22 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
-    {
+    // public function index()
+    // {
         
-        // return view('solicitudes.index');
-        $users = User::all(); // Obtener todas las solicitudes
-        return view('usuarios.index', compact('users'));
+    //     // return view('solicitudes.index');
+    //     $users = User::all(); // Obtener todas las solicitudes
+    //     return view('usuarios.index', compact('users'));
        
+    // }
+
+        public function index()
+    {
+        // Carga ansiosa de los roles asociados a cada usuario
+        $users = User::with('roles')->get();
+        return view('usuarios.index', compact('users'));
     }
+
     public function create()
     {
  
@@ -74,7 +82,9 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        return view('usuarios.edit', compact('user'));
+        $roles = Role::all(); // Obtiene todos los roles
+        $userRole = $user->roles->first() ? $user->roles->first()->name : '';
+        return view('usuarios.edit',  ['user' => $user, 'roles' => $roles, 'userRole' => $userRole]);
     }
 
     public function update(Request $request, $id)
