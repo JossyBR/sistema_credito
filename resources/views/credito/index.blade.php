@@ -3,6 +3,9 @@
 @section('content')
 <div class="container">
     <h2>Créditos</h2>
+    @if ($creditos->isEmpty())
+        <p>No tienes creditos.</p>
+    @else
     <table class="table">
         <thead>
             <tr>
@@ -33,6 +36,7 @@
             @endforeach
         </tbody>
     </table>
+    @endif
 </div>
 @endsection
 

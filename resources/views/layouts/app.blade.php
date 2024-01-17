@@ -28,8 +28,14 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="p-3">
+                @role('super administrador') 
+                <a  href="{{ route('usuarios.index') }}" class="text-black p-3">Inicio</a>
+                @else
+                @endrole
+                @hasanyrole('asesor|gerente general|cliente')
                 <a  href="{{ route('solicitudes.index') }}" class="text-black p-3">Solicitudes</a>
                 <a href="{{ route('credito.index') }}" class="text-black p-3">Creditos</a>
+                @endhasanyrole
                 @role('gerente general') 
                 <a href="/users/create" class="text-black p-3">Crear asesor</a>
                 @else

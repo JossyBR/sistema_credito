@@ -7,7 +7,7 @@
         @csrf
         <div class="form-group">
             <label for="cliente_solicitante">Cliente que solicita</label>
-            <input type="text" class="form-control" id="cliente_solicitante" name="cliente_solicitante"  required>
+            <input type="text" class="form-control" id="cliente_solicitante" name="cliente_solicitante" required>
         </div>
 
         <div class="form-group">
@@ -16,7 +16,13 @@
         </div>
         <div class="form-group">
             <label for="cuotas_solicitadas">Cuotas que solicita</label>
-            <input type="number" class="form-control" id="cuotas_solicitadas" name="cuotas_solicitadas" required>
+            <select class="form-control" id="cuotas_solicitadas" name="cuotas_solicitadas">
+            <option >Seleccione</option>
+                <option value="6">6</option>
+                <option value="12">12</option>
+                <option value="24">24</option>
+                <option value="36">36</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="descripcion">Descripción</label>

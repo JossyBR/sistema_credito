@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
 
         // Crear usuario y asignar el rol de 'super administrador'
         $userSuperAdmin = User::create([
-            'name' => 'Sofia Gonzalez',
-            'email' => 'sofi@gmail.com',
+            'name' => 'Administrador',
+            'email' => 'admin@gmail.com',
             'password' => Hash::make('admin1234')
         ]);
         $userSuperAdmin->assignRole('super administrador');

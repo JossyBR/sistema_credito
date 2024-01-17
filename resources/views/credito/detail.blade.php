@@ -8,15 +8,18 @@
             <h3>Información de la Solicitud</h3>
             <p><strong>Cliente Solicitante:</strong> {{ $solicitud->cliente_solicitante }}</p>
             <p><strong>Valor del Crédito Solicitado:</strong> {{ $solicitud->valor_credito }}</p>
-            <p><strong>Cuotas:</strong> {{ $solicitud->cuotas }}</p>
+            <p><strong>Cuotas:</strong> {{ $solicitud->cuotas_solicitadas }}</p>
             <p><strong>Descripción:</strong> {{ $solicitud->descripcion }}</p>
-            <p><strong>Estado:</strong> {{ $solicitud->estado }}</p>
+            <p><strong>Estado:</strong> {{ $solicitud->estado_solicitud }}</p>
             <p><strong>Tipo de Crédito:</strong> {{ $solicitud->tipo_credito }}</p>
         </div>
     </div>
-
+    @role('asesor')
+    <button type="submit" class="btn btn-success">Enviar</button>
+    @endrole
+    @role('gerente general')
     <h3>Detalles del Crédito</h3>
-    <form method="POST" action="{{ route('credito.store') }}">
+    <form method="POST" action="{{ route('credito.store') }}" id="formularioCredito">
         @csrf
         <!-- Campos del Crédito... -->
         <!-- <input type="hidden" name="solicitud_id" value="{{ $solicitud->id }}"> -->
@@ -27,16 +30,21 @@
        
         <div class="form-group">
             <label for="valor_credito">Valor del Credito</label>
-            <input type="hidden" class="form-control" id="valor_credito" name="valor_credito" value="{{ $solicitud->valor_credito }}">
-            <p>{{ $solicitud->valor_credito }}</p>
+            <input type="number" class="form-control" id="valor_credito" name="valor_credito" value="{{ $solicitud->valor_credito }}">
         </div>
         <div class="form-group">
             <label for="numero_cuotas">Número de Cuotas</label>
-            <input type="text" class="form-control" id="numero_cuotas" name="numero_cuotas">
+            <select class="form-control" id="numero_cuotas" name="numero_cuotas" onchange="calcularValorCuota()">
+                <option >Seleccione</option>
+                <option value="6">6</option>
+                <option value="12">12</option>
+                <option value="24">24</option>
+                <option value="36">36</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="valor_cuota">Valor de Cuotas</label>
-            <input type="text" class="form-control" id="valor_cuota" name="valor_cuota">
+            <input type="text" class="form-control" id="valor_cuota" name="valor_cuota" readonly>
         </div>
         <div class="form-group">
             <label for="cliente_solicitante">Cliente que solicita</label>
@@ -54,8 +62,12 @@
 
         <div class="form-group">
             <label for="tipo_credito">Tipo de credito</label>
-            <input type="hidden" class="form-control" id="tipo_credito" name="tipo_credito" value="{{ $solicitud->tipo_credito }}">
-            <p>{{ $solicitud->tipo_credito }}</p>
+            <select class="form-control" id="tipo_credito" name="tipo_credito" onchange="calcularValorCuota()">
+                <option value="Libre inversión">Libre inversión</option>
+                <option value="Vivienda">Vivienda</option>
+            </select>
+            <!-- <input type="hidden" class="form-control" id="tipo_credito" name="tipo_credito" value="{{ $solicitud->tipo_credito }}">
+            <p>{{ $solicitud->tipo_credito }}</p> -->
         </div>
         <input type="hidden" name="solicitud_id" value="{{ $solicitud->id }}">
         <input type="hidden" name="accion" id="accion" value="">
@@ -64,26 +76,63 @@
             <button type="submit" class="btn btn-success" onclick="setAccion('aprobar')">Aprobado</button>
             <button type="submit" class="btn btn-success" onclick="setAccion('rechazar')">No Aprobado</button>
         </div>
+       
         
-        <script>
+        <!-- <script>
             function setAccion(accion) {
                 document.getElementById('accion').value = accion;
             }
-        </script>
+        </script> -->
+        
+        <script>
+            function setAccion(accion) {
+            document.getElementById('accion').value = accion;
+            document.getElementById('formularioCredito').submit();
+            }
+    </script>
+
+    <script>
+        // function setAccion(accion) {
+        //     document.getElementById('accion').value = accion;
+        //     document.getElementById('formularioCredito').submit();
+        // }
+
+        function setAccion(accion) {
+        document.getElementById('accion').value = accion;
+        if (accion === 'rechazar') {
+            // Deshabilitar los campos que no son necesarios para la acción 'rechazar'
+            deshabilitarCamposAprobacion();
+            // Enviar el formulario
+            document.getElementById('formularioCredito').submit();
+        }
+    }
+
+    function deshabilitarCamposAprobacion() {
+        document.getElementById('numero_cuenta').disabled = true;
+        document.getElementById('numero_cuotas').disabled = true;
+        document.getElementById('valor_cuota').disabled = true;
+        document.getElementById('fecha_aprobacion').disabled = true;
+        document.getElementById('aprobador').disabled = true;
+        document.getElementById('tipo_credito').disabled = true;
+    }
+
+        function calcularValorCuota() {
+        var valorCredito = parseFloat(document.getElementById('valor_credito').value);
+        var numeroCuotas = parseInt(document.getElementById('numero_cuotas').value);
+        var tipoCredito = document.getElementById('tipo_credito').value;
+        var interes = tipoCredito === 'Libre inversión' ? 0.025 : 0.013;
+
+        if (!isNaN(valorCredito) && !isNaN(numeroCuotas) && tipoCredito) {
+            var valorCuota = (valorCredito / numeroCuotas) * (1 + interes);
+            document.getElementById('valor_cuota').value = valorCuota.toFixed(2);
+        }
+    }
+    </script>
 
     </form>
+    @endrole
   
 </div>
 @endsection
 
-<!-- <div class="mt-4">
-        <form method="POST">
-            @csrf
-            <button type="submit" class="btn btn-success">Aprobado</button>
-        </form>
 
-        <form method="POST" >
-            @csrf
-            <button type="submit" class="btn btn-danger">No Aprobado</button>
-        </form>
-    </div> -->

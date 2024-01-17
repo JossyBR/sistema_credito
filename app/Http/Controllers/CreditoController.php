@@ -18,21 +18,20 @@ class CreditoController extends Controller
 
     public function store(Request $request)
 {
-    // Validación de los datos comunes
     $request->validate([
-        'numero_cuenta' => 'required',
-        'numero_cuotas' => 'required|numeric',
-        'valor_cuota' => 'required|numeric',
-        'fecha_aprobacion' => 'required|date',
-        'aprobador' => 'required',
-        'tipo_credito' => 'required',
         'accion' => 'required|in:aprobar,rechazar',
-        'solicitud_id' => 'required|exists:solicitudes,id'
+        'solicitud_id' => 'required|exists:solicitudes,id',
+        // Asumiendo que no se requiere validar estos campos si la acción es 'rechazar'
+        'numero_cuenta' => 'required_if:accion,aprobar|digits:10|unique:creditos',
+        'numero_cuotas' => 'required_if:accion,aprobar|in:6,12,24,36',
+        'fecha_aprobacion' => 'required_if:accion,aprobar|date',
+        'aprobador' => 'required_if:accion,aprobar',
+        'tipo_credito' => 'required_if:accion,aprobar|in:Libre inversión,Vivienda',
     ]);
 
     // Dependiendo de la acción, se aprueba o rechaza el crédito
     if ($request->accion == 'aprobar') {
-        // Crear el crédito
+
         $credito = new Credito([
             'numero_cuenta' => $request->numero_cuenta,
             'valor_credito' => $request->valor_credito,
@@ -44,8 +43,18 @@ class CreditoController extends Controller
             'tipo_credito' => $request->tipo_credito,
             'solicitud_id' => $request->solicitud_id,
             'estado' => 'aprobado',
-            
         ]);
+
+        //Validación adicional si la acción es 'aprobar'
+        // $request->validate([
+        //     'numero_cuenta' => 'required',
+        //     'numero_cuotas' => 'required|numeric',
+        //     'valor_cuota' => 'required|numeric',
+        //     'fecha_aprobacion' => 'required|date',
+        //     'aprobador' => 'required',
+        //     'tipo_credito' => 'required',
+        // ]);
+       
         $credito->save();
         $mensaje = 'Crédito aprobado y creado con éxito';
 
@@ -62,7 +71,7 @@ class CreditoController extends Controller
     }
 
     // Redireccionar 
-    return redirect()->route('credito.index')->with('status', $mensaje);
+    return redirect()->route('solicitudes.index')->with('status', $mensaje);
 }
 
 

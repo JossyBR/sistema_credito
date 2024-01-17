@@ -3,8 +3,10 @@
 @section('content')
 <div class="container">
     <h1>Solicitudes de Credito</h1>
+    @role('cliente')
     <a href="/solicitudes/create" class="btn btn-success">Crear Solicitud</a>
     <a href="/creditos" class="btn btn-success">Ver Creditos</a>
+    @endrole
     @if ($solicitudes->isEmpty())
         <p>No tienes solicitudes.</p>
     @else
@@ -18,9 +20,9 @@
                 <th>Estado</th>
                 <th>Fecha de Solicitud</th>
                 <th>Tipo de Crédito</th>
-                @hasanyrole('asesor|gerente general')
+                @role('asesor|gerente generalcliente')
                 <th>Acciones</th>
-                @endhasanyrole
+                @endrole
             </tr>
         </thead>
         <tbody>
@@ -34,9 +36,9 @@
                 <td>{{ $solicitud->fecha_solicitud }}</td>
                 <td>{{ $solicitud->tipo_credito }}</td>
                 <td>
-                    @role('gerente general')
+                    @hasanyrole('asesor|gerente general')
                     <a href="{{ route('credito.show', $solicitud->id) }}" class="btn btn-success">Estudiar Solicitud</a>
-                    @endrole
+                    @endhasanyrole
                     @if(Auth::user()->hasRole('cliente') && $solicitud->user_id == Auth::id() && $solicitud->estado_solicitud === 'pendiente')
                             <a href="{{ route('solicitudes.edit', $solicitud->id) }}" class="btn btn-success">Editar</a>
                             <a href="{{ route('solicitudes.delete', $solicitud->id) }}" class="btn btn-success">Eliminar</a>
