@@ -12,11 +12,30 @@
             <p><strong>Descripción:</strong> {{ $solicitud->descripcion }}</p>
             <p><strong>Estado:</strong> {{ $solicitud->estado_solicitud }}</p>
             <p><strong>Tipo de Crédito:</strong> {{ $solicitud->tipo_credito }}</p>
+            
+            @if (Auth::user()->roles->contains('name', 'asesor') && $solicitud->estado_solicitud == 'pendiente')
+                <form action="{{ route('solicitudes.actualizarObservaciones', $solicitud->id) }}" method="POST">
+                    @csrf
+                    <p><strong>Observaciones:</strong>
+                        <textarea class="form-control" id="observaciones_asesor" name="observaciones_asesor">{{ $solicitud->observaciones_asesor }}</textarea>
+                    </p>
+                    <button type="submit" class="btn btn-success">Enviar al Gerente General</button>
+                </form>
+            @else
+                {{-- Mostrar observaciones para el Gerente General y Asesor si la solicitud no está pendiente --}}
+                <p><strong>Observaciones del Asesor:</strong> {{ $solicitud->observaciones_asesor }}</p>
+            @endif
+
         </div>
     </div>
-    @role('asesor')
-    <button type="submit" class="btn btn-success">Enviar</button>
-    @endrole
+    <!-- @if (Auth::user()->roles->contains('name', 'asesor') && $solicitud->estado_solicitud == 'pendiente')
+        <form action="{{ route('solicitudes.enviar', $solicitud->id) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-success">Enviar al Gerente General</button>
+        </form>
+    @endif -->
+
+
     @role('gerente general')
     <h3>Detalles del Crédito</h3>
     <form method="POST" action="{{ route('credito.store') }}" id="formularioCredito">

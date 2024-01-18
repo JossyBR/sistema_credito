@@ -40,6 +40,8 @@ Route::get('/solicitudes/{id}/edit', [SolicitudController::class, 'edit'])->name
 Route::put('/solicitudes/{id}', [SolicitudController::class, 'update'])->name('solicitudes.update');
 Route::get('/solicitudes/{id}/delete', [SolicitudController::class, 'confirmDelete'])->name('solicitudes.delete');
 Route::delete('/solicitudes/{id}', [SolicitudController::class, 'destroy'])->name('solicitudes.destroy');
+Route::post('/solicitudes/enviar/{id}', [SolicitudController::class, 'enviar'])->name('solicitudes.enviar');
+Route::post('/solicitudes/{solicitud}/observaciones', [SolicitudController::class, 'actualizarObservaciones'])->name('solicitudes.actualizarObservaciones');
 
 
 //creditos

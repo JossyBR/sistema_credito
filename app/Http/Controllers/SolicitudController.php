@@ -12,12 +12,23 @@ class SolicitudController extends Controller
     {
         $user = Auth::user();
 
-    // Verifica si el usuario es gerente general o asesor
-    if ($user->roles->pluck('name')->contains('gerente general') || $user->roles->pluck('name')->contains('asesor')) {
-        // Obtener todas las solicitudes
+    // // Verifica si el usuario es gerente general o asesor
+    // if ($user->roles->pluck('name')->contains('gerente general') || $user->roles->pluck('name')->contains('asesor')) {
+    //     // Obtener todas las solicitudes
+    //     $solicitudes = Solicitudes::all();
+    // } else {
+    //     // Obtener solo las solicitudes del usuario
+    //     $solicitudes = Solicitudes::where('user_id', $user->id)->get();
+    // }
+
+    if ($user->roles->contains('name', 'asesor')) {
+        // Para asesor, mostrar todas las solicitudes
         $solicitudes = Solicitudes::all();
+    } elseif ($user->roles->contains('name', 'gerente general')) {
+        // Para gerente general, mostrar las solicitudes 'enviadas'
+        $solicitudes = Solicitudes::where('estado_solicitud', 'enviada')->get();
     } else {
-        // Obtener solo las solicitudes del usuario
+        // Para otros usuarios, mostrar solo sus solicitudes
         $solicitudes = Solicitudes::where('user_id', $user->id)->get();
     }
 
@@ -131,7 +142,25 @@ public function destroy($id)
     return redirect()->route('solicitudes.index')->with('success', 'Solicitud eliminada correctamente.');
 }
 
+public function enviar($id)
+{
+    $solicitud = Solicitudes::find($id);
+    $solicitud->estado_solicitud = 'enviada';
+    $solicitud->save();
 
+    return redirect()->back()->with('status', 'Solicitud enviada al Gerente General');
+}
+
+public function actualizarObservaciones(Request $request, $solicitudId)
+{
+    $solicitud = Solicitudes::findOrFail($solicitudId);
+    $solicitud->observaciones_asesor = $request->observaciones_asesor;
+    $solicitud->estado_solicitud = 'enviada'; // Cambia el estado a 'enviada'
+    $solicitud->save();
+
+    // Redirige al índice con un mensaje
+    return redirect()->route('solicitudes.index')->with('success', 'Observaciones guardadas y solicitud enviada al gerente general.');
+}
 
 
 //     public function show($id)
