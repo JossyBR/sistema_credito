@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "prod": "npm run production"
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.6",
